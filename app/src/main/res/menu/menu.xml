@@ -9,6 +9,11 @@
           app:actionViewClass="android.support.v7.widget.SearchView"
           />
 
+    <item android:id="@+id/action_runService"
+          android:icon="@drawable/action_upload_service"
+          app:showAsAction="ifRoom"
+          android:title="Run Service" />
+
     <item android:title="Delete"
           android:id="@+id/action_delete"
           app:showAsAction="never"

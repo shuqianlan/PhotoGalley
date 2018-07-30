@@ -2,6 +2,7 @@ package com.test.compl.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,7 +32,9 @@ import com.test.compl.galley.GalleyItem;
 import com.test.compl.galley.ImageLoader;
 import com.test.compl.net.FlickrFetchr;
 import com.test.compl.net.ThumbnailDownloads;
+import com.test.compl.photogalley.PhotoGalleyActivity;
 import com.test.compl.photogalley.R;
+import com.test.compl.service.PollService;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,6 +68,10 @@ public class PhotoGalleyFragment extends Fragment implements ThumbnailDownloads.
         mRecyclerView = v.findViewById(R.id.fragment_galley_recyclerview);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         setAdapter();
+
+//        Intent intent = PollService.newIntent(getContext());
+//        getActivity().startService(intent);
+//        PollService.setServiceAlarm(getContext(), true);
         return v;
     }
 
@@ -237,6 +244,13 @@ public class PhotoGalleyFragment extends Fragment implements ThumbnailDownloads.
                 return false;
             }
         });
+
+        MenuItem menuItem = menu.findItem(R.id.action_runService);
+        if (PollService.isServiceAlarmOn(getContext())) {
+            menuItem.setTitle("Running");
+        } else {
+            menuItem.setTitle("Idle");
+        }
     }
 
     @Override
@@ -252,6 +266,12 @@ public class PhotoGalleyFragment extends Fragment implements ThumbnailDownloads.
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+                return true;
+            case R.id.action_runService:
+                boolean isRunning = PollService.isServiceAlarmOn(getContext());
+                Log.d(TAG, "onOptionsItemSelected: isRunning " + isRunning);
+                PollService.setServiceAlarm(getContext(), !isRunning);
+                getActivity().invalidateOptionsMenu(); // 声明过时，稍后会重建.
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

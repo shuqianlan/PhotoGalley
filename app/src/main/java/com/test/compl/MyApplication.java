@@ -2,6 +2,7 @@ package com.test.compl;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 
 public class MyApplication extends Application {
 
@@ -12,6 +13,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         sContext = getApplicationContext();
+//        StrictMode.enableDefaults();
     }
 
     public static Context getContext() {
