@@ -13,7 +13,6 @@ public class MyApplication extends Application {
         super.onCreate();
 
         sContext = getApplicationContext();
-//        StrictMode.enableDefaults();
     }
 
     public static Context getContext() {

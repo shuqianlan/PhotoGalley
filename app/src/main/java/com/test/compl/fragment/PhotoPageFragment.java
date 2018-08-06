@@ -34,7 +34,7 @@ public class PhotoPageFragment extends VisibleFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         mUri = getArguments().getParcelable(DATA_URI);
     }
 
@@ -50,7 +50,6 @@ public class PhotoPageFragment extends VisibleFragment {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                return super.shouldOverrideUrlLoading(view, request);
                 return false;// webView处理.
             }
         });

@@ -10,7 +10,7 @@
         android:id="@+id/fragment_photo_page_progress_bar"
         android:visibility="gone"
         style="?android:attr/progressBarStyleHorizontal"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/darker_gray"
         />
 
     <WebView
