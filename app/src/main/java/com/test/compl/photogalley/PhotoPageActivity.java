@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.KeyEvent;
 
 import com.test.compl.BaseActivity;
 import com.test.compl.fragment.PhotoPageFragment;
 
-public class PhotoPageActivity extends BaseActivity implements View.OnTouchListener{
+public class PhotoPageActivity extends BaseActivity{
 
     @Override
     protected Fragment getFragmentInstance() {
@@ -28,12 +27,13 @@ public class PhotoPageActivity extends BaseActivity implements View.OnTouchListe
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (event.getAction() == MotionEvent.BUTTON_BACK) {
-            getCurrentFragment().onDealWithEvent(event);
-            return true;
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (getCurrentFragment().onDealWithKeyBack()) {
+                return true;
+            };
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
 }

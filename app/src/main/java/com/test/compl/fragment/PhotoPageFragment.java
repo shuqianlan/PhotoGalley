@@ -80,9 +80,12 @@ public class PhotoPageFragment extends VisibleFragment {
         return v;
     }
 
-    public void onDealWithEvent(MotionEvent ev) {
+    public boolean onDealWithKeyBack() {
         if (mWebView.canGoBack()) {
             mWebView.goBack();
+            return true;
         }
+
+        return false;
     }
 }

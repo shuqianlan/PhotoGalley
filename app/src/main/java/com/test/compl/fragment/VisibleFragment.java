@@ -53,7 +53,7 @@ public class VisibleFragment extends Fragment {
 
         IntentFilter intentFilter = new IntentFilter(PollService.ACTION_SHOW_NOTIFICATION);
         getActivity().registerReceiver(mOnShowNotification, intentFilter, PollService.PREM_PRIVATE, null);
-        mEventBus.register(this);
+//        mEventBus.register(this);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class VisibleFragment extends Fragment {
         super.onStop();
 
         getActivity().unregisterReceiver(mOnShowNotification);
-        mEventBus.unregister(this);
+//        mEventBus.unregister(this);
     }
 
     private BroadcastReceiver mOnShowNotification = new BroadcastReceiver() {
