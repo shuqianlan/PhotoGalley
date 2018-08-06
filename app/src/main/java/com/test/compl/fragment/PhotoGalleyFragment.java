@@ -33,13 +33,14 @@ import com.test.compl.galley.ImageLoader;
 import com.test.compl.net.FlickrFetchr;
 import com.test.compl.net.ThumbnailDownloads;
 import com.test.compl.photogalley.PhotoGalleyActivity;
+import com.test.compl.photogalley.PhotoPageActivity;
 import com.test.compl.photogalley.R;
 import com.test.compl.service.PollService;
 
 import java.io.IOException;
 import java.util.List;
 
-public class PhotoGalleyFragment extends Fragment implements ThumbnailDownloads.ThumbnailDownLoadListener<PhotoGalleyFragment.PhotoHolder> {
+public class PhotoGalleyFragment extends VisibleFragment implements ThumbnailDownloads.ThumbnailDownLoadListener<PhotoGalleyFragment.PhotoHolder> {
 
     public static final String TAG = "Photo_Galley";
     private ThumbnailDownloads<PhotoHolder> mHolderThumbnailDownloads;
@@ -69,9 +70,6 @@ public class PhotoGalleyFragment extends Fragment implements ThumbnailDownloads.
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         setAdapter();
 
-//        Intent intent = PollService.newIntent(getContext());
-//        getActivity().startService(intent);
-//        PollService.setServiceAlarm(getContext(), true);
         return v;
     }
 
@@ -106,10 +104,8 @@ public class PhotoGalleyFragment extends Fragment implements ThumbnailDownloads.
 
         @Override
         public void onClick(View v) {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-
-            PhotoShowFragment fragment = PhotoShowFragment.newInstance(galley.getUrl());
-            fragment.show(fm, "123");
+            Intent i = PhotoPageActivity.newIntent(getContext(), galley.getPhotoUri());
+            startActivity(i);
         }
     }
 

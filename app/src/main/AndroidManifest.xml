@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.test.compl.photogalley">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <permission android:name="com.test.compl.photogalley.PhotoGalleyActivity.PRIVATE"
+                android:protectionLevel="signature" />
 
     <application
         android:name="com.test.compl.MyApplication"
@@ -22,10 +26,31 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".PhotoPageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+
         <service
             android:name="com.test.compl.service.PollService"
             android:exported="false">
         </service>
+
+        <receiver
+            android:name="com.test.compl.broadcast.BootCompleteReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.test.compl.broadcast.NotificationReceiver"
+                  android:exported="false">
+            <intent-filter android:priority="-999">
+                <action android:name="com.test.compl.service.photo.SHOW_NOTIFICATION" />
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

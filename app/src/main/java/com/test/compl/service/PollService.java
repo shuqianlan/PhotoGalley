@@ -1,5 +1,6 @@
 package com.test.compl.service;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -16,6 +17,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.test.compl.BaseActivity;
+import com.test.compl.Utils;
 import com.test.compl.photogalley.PhotoGalleyActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -24,6 +26,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PollService extends IntentService {
 
     public static final String TAG = "PollService";
+    public static final String ACTION_SHOW_NOTIFICATION = "com.test.compl.service.photo.SHOW_NOTIFICATION";
+    public static final String PREM_PRIVATE = "com.test.compl.photogalley.PhotoGalleyActivity.PRIVATE";
+    public static final String REQUEST_CODE = "REQUEST_CODE";
+    public static final String NOTIFICATION = "NOTIFICATION";
+
     private static final long POLL_INTEWRVAL_MS = TimeUnit.MINUTES.toMillis(1);
     private AtomicInteger count = new AtomicInteger(0);
 
@@ -47,7 +54,6 @@ public class PollService extends IntentService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, intent1, 0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d(TAG, "onHandleIntent: ...");
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(new NotificationChannel("notice", "notice", NotificationManager.IMPORTANCE_MIN));
             Notification notification = new Notification.Builder(this, "notice")
@@ -59,9 +65,17 @@ public class PollService extends IntentService {
                     .setContentIntent(pendingIntent)
                     .build();
 
-            NotificationManagerCompat.from(this).notify(0, notification);
+            showBackgroundNotification(0, notification);
         }
 
+//        sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION), PREM_PRIVATE); // 权限校验.
+    }
+
+    private void showBackgroundNotification(int requestCode, Notification notification) {
+        Intent i = new Intent(ACTION_SHOW_NOTIFICATION);
+        i.putExtra(REQUEST_CODE, requestCode);
+        i.putExtra(NOTIFICATION, notification);
+        sendOrderedBroadcast(i, PREM_PRIVATE, null, null, Activity.RESULT_OK, null, null);
     }
 
     private boolean isNetworkAvailableAndConnected() {
@@ -83,6 +97,8 @@ public class PollService extends IntentService {
             alarmManager.cancel(pendingIntent);
             pendingIntent.cancel();
         }
+
+        Utils.setAlarmOn(isON);
     }
 
     public static boolean isServiceAlarmOn(Context context) {
