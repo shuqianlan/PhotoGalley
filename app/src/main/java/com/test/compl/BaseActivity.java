@@ -30,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 mFragmentManager.beginTransaction().add(R.id.framelayout, fragment).commit();
             }
         }
-//        DiskLruCache
     }
 
     @LayoutRes
